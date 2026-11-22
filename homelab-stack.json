@@ -1,0 +1,43 @@
+{
+  "version": 8,
+  "name": "navidrome",
+  "nixpkgs": "nixos-unstable",
+  "routes": [
+    { "host": "music", "port": 4533 },
+    { "host": "deemix", "port": 6595 }
+  ],
+  "variables": [
+    {
+      "name": "MUSIC_DIR",
+      "kind": "path",
+      "description": "The music library: Navidrome plays it and deemix downloads into it. Its group becomes the stack's media group, which both use.",
+      "required": true,
+      "mount": "/pool/media/library/music",
+      "group": "media"
+    }
+  ],
+  "backup": {
+    "folders": [
+      {
+        "label": "Navidrome settings",
+        "path": "/var/lib/navidrome",
+        "exclude": [
+          { "pattern": "/cache/**", "reason": "Resized artwork and transcodes. They are made again." },
+          { "pattern": "/artwork/**", "reason": "Downloaded artist and album images. They download again." }
+        ]
+      },
+      {
+        "label": "Deemix settings",
+        "path": "/var/lib/deemix",
+        "exclude": [
+          { "pattern": "/logs/**", "reason": "Log files." },
+          { "pattern": "/queue/**", "reason": "The download queue." }
+        ]
+      }
+    ]
+  },
+  "health": {
+    "units": ["navidrome.service", "deemix.service"],
+    "http": { "port": 4533, "path": "/ping" }
+  }
+}
