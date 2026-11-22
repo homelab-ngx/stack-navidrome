@@ -1,7 +1,8 @@
 {
-  "version": 8,
+  "version": 9,
   "name": "navidrome",
   "nixpkgs": "nixos-unstable",
+  "icon": "navidrome",
   "routes": [
     { "host": "music", "port": 4533 },
     { "host": "deemix", "port": 6595 }
@@ -39,5 +40,9 @@
   "health": {
     "units": ["navidrome.service", "deemix.service"],
     "http": { "port": 4533, "path": "/ping" }
-  }
+  },
+  "services": [
+    { "unit": "navidrome.service", "icon": "navidrome" },
+    { "unit": "deemix.service", "icon": "deemix" }
+  ]
 }
